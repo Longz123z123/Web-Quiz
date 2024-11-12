@@ -16,7 +16,6 @@
     "redux": "4.2.0",
     "redux-devtools-extension": "2.13.9",
     "redux-thunk": "2.4.1",
-    "sass": "1.80.6",
     "web-vitals": "2.1.4"
   },
   "scripts": {
@@ -42,5 +41,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "sass": "^1.80.6",
+    "sass-loader": "^16.0.3"
   }
 }
