@@ -1,5 +1,7 @@
 import axios from "axios";
 
+//Thư viện Axios trong React được sử dụng để thực hiện các yêu cầu HTTP (HyperText Transfer Protocol) đến các API (Application Programming Interface). 
+// Nói cách khác, nó giúp bạn giao tiếp với các server khác để lấy hoặc gửi dữ liệu.
 
 const instance = axios.create({
     baseURL: 'http://localhost:8081/',

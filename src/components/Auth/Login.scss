@@ -1,0 +1,89 @@
+.login-content {  
+    background-image: url('../../assets/bg1.jpg');  
+    background-size: cover;   
+    background-position: center;   
+    background-repeat: no-repeat;   
+    min-height: 100vh;   
+
+    .header {  
+        height: 45px;  
+        text-align: right;  
+        display: flex;  
+        justify-content: flex-end;  
+        align-items: center;  
+        padding: 5px 100px 0 100px;  
+        gap: 15px;  
+        
+        .font-header-span{
+        font-family: Arial, sans-serif;  
+        font-weight: bold;  
+        color: black;  
+        }
+        
+        button { 
+            font-weight: bold;
+            color:black;
+            padding: 3px 15px;  
+            border: 1px solid;  
+            border-radius: 5px;   
+            background: white;  
+            &:hover {  
+                background-color: whitesmoke;  
+            }  
+        }  
+    }  
+
+    .title {  
+        font-size: 25px;  
+        padding: 20px 0;  
+        text-align: center;  
+        font-family: Arial, sans-serif;  
+        font-weight: bold;
+        color: black;  
+        text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.7);  
+    }  
+
+    .welcome {  
+        font-size: 20px;  
+        padding: 20px 0;  
+        text-align: center;  
+        font-family: Arial, sans-serif;  
+        font-weight: bold;   
+        color: black;    
+        text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.7);
+    }  
+
+    .content-form {
+        font-weight: bold;   
+  
+        input {  
+            margin-bottom: 15px;  
+            margin-top: 3px;  
+            font-size: 16px; // Consider increasing font size for better readability  
+            padding: 10px; // Improve input padding for comfort  
+        }  
+
+        button {  
+            width: 100%;  
+            height: 40px;  
+            border: none;  
+            margin: 20px 0;  
+            border-radius: 5px;  
+            color: white;  
+            background: black;  
+            font-family: Arial, sans-serif;  // Change to a clearer font  
+            font-weight: bold;  // Use bold for better visibility  
+        }  
+
+        .back {  
+            cursor: pointer;  
+            font-family: Arial, sans-serif; // Change to a clearer font  
+            font-weight: normal;  // Keep normal weight but consider size and color adjustments  
+            color: black; // Change color to black for visibility  
+            &:hover {  
+                color: white; // Change hover color for better interaction feedback  
+                font-weight: bold;  
+            }  
+        }  
+    }  
+}
