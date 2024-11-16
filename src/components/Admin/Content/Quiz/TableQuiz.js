@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAllQuizForAdmin } from '../../../../services/apiServices';
+import ManageQuiz from './ManageQuiz';
 import ModalUpdateQuiz from './ModalUpdateQuiz';
 import ModalDeleteQuiz from './ModalDeleteQuiz';
 const TableQuiz = (props) => {
@@ -8,18 +8,17 @@ const TableQuiz = (props) => {
   const [listQuiz, setListQuiz] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
   const [dataDelete, setDataDelete] = useState({});
+  const {
+    fetchQuiz, // Nhận hàm fetchQuiz từ props
+    listQuiz: initialListQuiz, // Nhận danh sách quiz từ props
+  } = props;
 
   ///
   useEffect(() => {
-    fetchQuiz();
-  }, []);
-
-  const fetchQuiz = async () => {
-    let res = await getAllQuizForAdmin();
-    if (res && res.EC === 0) {
-      setListQuiz(res.DT);
+    if (initialListQuiz) {
+      setListQuiz(initialListQuiz);
     }
-  };
+  }, [initialListQuiz]);
 
   const handleUpdate = (quiz) => {
     setDataUpdate(quiz);
@@ -85,7 +84,6 @@ const TableQuiz = (props) => {
         dataDelete={dataDelete}
         fetchQuiz={fetchQuiz}
       />
-      {/* <ManageQuiz fetchQuiz={fetchQuiz} /> */}
     </>
   );
 };

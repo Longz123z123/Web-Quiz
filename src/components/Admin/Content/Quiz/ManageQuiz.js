@@ -1,7 +1,10 @@
 import './ManageQuiz.scss';
 import Select from 'react-select';
-import { useState } from 'react';
-import { postCreateNewQuiz } from '../../../../services/apiServices';
+import { useState, useEffect } from 'react';
+import {
+  postCreateNewQuiz,
+  getAllQuizForAdmin,
+} from '../../../../services/apiServices';
 import { toast } from 'react-toastify';
 import TableQuiz from './TableQuiz';
 import Accordion from 'react-bootstrap/Accordion';
@@ -13,12 +16,27 @@ const options = [
   { value: 'HARD', label: 'HARD' },
 ];
 
-const ManageQuiz = ({}) => {
+const ManageQuiz = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState('');
   const [image, setImage] = useState(null);
+  const [listQuiz, setListQuiz] = useState([]); // Thay đổi state cho danh sách quiz
 
+  //
+  // Định nghĩa hàm fetchQuiz trong component cha
+  const fetchQuiz = async () => {
+    let res = await getAllQuizForAdmin();
+    if (res && res.EC === 0) {
+      setListQuiz(res.DT); // Cập nhật danh sách quiz từ API
+    } else {
+      toast.error(res.EM); // Hiển thị lỗi nếu có
+    }
+  };
+
+  useEffect(() => {
+    fetchQuiz(); // Gọi fetchQuiz ngay khi component được mount
+  }, []);
   const handleChangeFile = (event) => {
     if (event.target && event.target.files && event.target.files[0]) {
       setImage(event.target.files[0]);
@@ -38,6 +56,7 @@ const ManageQuiz = ({}) => {
       setName('');
       setDescription('');
       setImage(null);
+      fetchQuiz();
     } else {
       toast.error(res.EM);
     }
@@ -101,7 +120,7 @@ const ManageQuiz = ({}) => {
         </Accordion.Item>
       </Accordion>
       <div className="list-detail">
-        <TableQuiz />
+        <TableQuiz listQuiz={listQuiz} fetchQuiz={fetchQuiz} />{' '}
       </div>
     </div>
   );
