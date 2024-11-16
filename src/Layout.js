@@ -11,38 +11,49 @@ import { Toast } from 'bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Register from './components/Auth/Register';
+import ListQuiz from './components/User/ListQuiz';
+import DetailQuiz from './components/User/DetailQuiz';
+import ManageQuiz from './components/Admin/Content/Quiz/ManageQuiz';
+const NotFound = () => {
+  return (
+    <div className="container mt-3 alert alert-danger">
+      ERRO 404 : Not found DATA with current URL!
+    </div>
+  );
+};
 const Layout = (props) => {
-    return (
-        <>
-            <Routes>
-                <Route path="/" element={<App />}>
-                    <Route index element={<HomePage />}></Route>
-                    <Route path="users" element={<User />}></Route>
-                </Route>
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route index element={<HomePage />}></Route>
+          <Route path="users" element={<ListQuiz />}></Route>
+        </Route>
+        <Route path="/quiz/:id" element={<DetailQuiz />}></Route>
 
-                <Route path="/admins" element={<Admin />}>
-                    <Route index element={<Dashboard />}></Route>
-                    <Route path="manage-users" element={<ManageUser />}></Route>
+        <Route path="/admins" element={<Admin />}>
+          <Route index element={<Dashboard />}></Route>
+          <Route path="manage-users" element={<ManageUser />}></Route>
+          <Route path="manage-quizzes" element={<ManageQuiz />}></Route>
+        </Route>
+        <Route path="/login" element={<Login></Login>}></Route>
+        <Route path="/register" element={<Register></Register>}></Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
 
-                </Route>
-                <Route path="/login" element={<Login></Login>}></Route>
-                <Route path="/register" element={<Register></Register>}></Route>
-            </Routes>
-
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-
-            />
-        </>
-    )
-}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </>
+  );
+};
 export default Layout;

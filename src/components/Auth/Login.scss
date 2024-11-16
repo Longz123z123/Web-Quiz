@@ -1,4 +1,20 @@
-.login-content {  
+.login-container {  
+    .loader-icon{
+        // margin-bottom: 14px;
+        font-size: 14px;
+        color: #04d4ff;
+        animation: spin 1s infinite linear;
+        margin-right: 5px;
+    }
+    
+    @keyframes spin {
+        from {
+            transform: scale(1) rotate(0deg);
+        }
+        to {
+            transform: scale(1) rotate(360deg);
+        }
+    }
     background-image: url('../../assets/bg1.jpg');  
     background-size: cover;   
     background-position: center;   
@@ -73,6 +89,13 @@
             background: black;  
             font-family: Arial, sans-serif;  // Change to a clearer font  
             font-weight: bold;  // Use bold for better visibility  
+
+            &:disabled{
+                background: #dddddd ;
+                color: #afafaf;
+                cursor: no-drop;
+                
+            }
         }  
 
         .back {  

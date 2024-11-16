@@ -18,7 +18,7 @@ const ManageUser = (props) => {
     const [showModalDeleteUser, setShowModalDeleteUser] = useState(false);
     const [dataDelete, setDataDelete] = useState({});
     // paginate
-    const LIMIT_USER = 2;
+    const LIMIT_USER = 5;
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
 

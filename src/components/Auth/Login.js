@@ -3,13 +3,16 @@ import './Login.scss'
 import { useNavigate } from 'react-router-dom';
 import { postLogin } from '../../services/apiServices';
 import { toast } from 'react-toastify';
-
+import { useDispatch } from 'react-redux';
+import { doLogin } from '../../redux/action/userAction'
+import { ImSpinner10 } from "react-icons/im"
+import 'nprogress/nprogress.css'
 const Login = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
-
+    const dishpash = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
 
     const validateEmail = (email) => {
         return String(email)
@@ -30,20 +33,23 @@ const Login = (props) => {
             toast.error('Invalid password')
             return;
         }
-
+        setIsLoading(true);
         //submit api
         let data = await postLogin(email, password);
         if (data && data.EC === 0) {
+            dishpash(doLogin(data))
             toast.success(data.EM)
+            setIsLoading(false);
             navigate('/')
         }
         if (data && +data.EC !== 0) {
             toast.error(data.EM)
+            setIsLoading(false);
         }
     }
 
     return (
-        <div className="login-content">
+        <div className="login-container">
             <div className='header'>
                 <span className='font-header-span'>  Don't have an account yet?  </span>
                 <button onClick={() => navigate('/register')}>Sign up</button>
@@ -73,7 +79,11 @@ const Login = (props) => {
                 <div>
                     <button className='btn-submit'
                         onClick={() => handleLogin()}
-                    >Login to ZeT1</button>
+                        disabled={isLoading}
+
+                    >
+                        {isLoading === true && <ImSpinner10 className='loader-icon' />}
+                        <span>Login to ZeT1</span></button>
                 </div>
                 <div className='back text-center'>
                     <span onClick={() => { navigate('/') }}> &#60;&#60; Go to Homepage</span>
