@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import ManageQuiz from './ManageQuiz';
+import { getAllQuizForAdmin } from '../../../../services/apiServices';
 import ModalUpdateQuiz from './ModalUpdateQuiz';
 import ModalDeleteQuiz from './ModalDeleteQuiz';
 const TableQuiz = (props) => {
@@ -8,17 +8,18 @@ const TableQuiz = (props) => {
   const [listQuiz, setListQuiz] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
   const [dataDelete, setDataDelete] = useState({});
-  const {
-    fetchQuiz, // Nhận hàm fetchQuiz từ props
-    listQuiz: initialListQuiz, // Nhận danh sách quiz từ props
-  } = props;
 
   ///
   useEffect(() => {
-    if (initialListQuiz) {
-      setListQuiz(initialListQuiz);
+    fetchQuiz();
+  }, []);
+
+  const fetchQuiz = async () => {
+    let res = await getAllQuizForAdmin();
+    if (res && res.EC === 0) {
+      setListQuiz(res.DT);
     }
-  }, [initialListQuiz]);
+  };
 
   const handleUpdate = (quiz) => {
     setDataUpdate(quiz);
@@ -53,16 +54,10 @@ const TableQuiz = (props) => {
                   <td>{item.description}</td>
                   <td>{item.difficulty}</td>
                   <td style={{ display: 'flex', gap: '15px' }}>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => handleUpdate(item)}
-                    >
+                    <button className="btn btn-primary" onClick={() => handleUpdate(item)}>
                       Edit
                     </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => handleDelete(item)}
-                    >
+                    <button className="btn btn-danger" onClick={() => handleDelete(item)}>
                       Delete
                     </button>
                   </td>

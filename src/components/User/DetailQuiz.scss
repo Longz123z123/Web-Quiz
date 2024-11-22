@@ -46,5 +46,45 @@
     border-radius: 5px;
     padding: 20px;
     width: 30%;
+    .main-timer {
+      border-bottom: 1px dashed;
+      padding: 10px 0 20px 0;
+      text-align: center;
+      font-weight: 600;
+      font-size: 20px;
+    }
+    .main-question {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      padding: 15px;
+      .question {
+        border: 1px solid black;
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        &:hover {
+          color: red;
+        }
+        &.selected {
+          background-color: #c6c6c6;
+        }
+        &.clicked {
+          color: red;
+        }
+      }
+    }
   }
+}
+.correct {
+  color: green;
+  font-size: 25px;
+}
+.incorrect {
+  color: red;
+  font-size: 25px;
 }

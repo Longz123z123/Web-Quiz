@@ -1,42 +1,25 @@
 import './ManageQuiz.scss';
 import Select from 'react-select';
-import { useState, useEffect } from 'react';
-import {
-  postCreateNewQuiz,
-  getAllQuizForAdmin,
-} from '../../../../services/apiServices';
+import { useState } from 'react';
+import { postCreateNewQuiz } from '../../../../services/apiServices';
 import { toast } from 'react-toastify';
 import TableQuiz from './TableQuiz';
 import Accordion from 'react-bootstrap/Accordion';
 import React from 'react';
-
+import QuizQA from './QuizQA';
+import AssignQuiz from './AssginQuiz';
 const options = [
   { value: 'EASY', label: 'EASY' },
   { value: 'MEDIUM', label: 'MEDIUM' },
   { value: 'HARD', label: 'HARD' },
 ];
 
-const ManageQuiz = () => {
+const ManageQuiz = ({}) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState('');
   const [image, setImage] = useState(null);
-  const [listQuiz, setListQuiz] = useState([]); // Thay đổi state cho danh sách quiz
 
-  //
-  // Định nghĩa hàm fetchQuiz trong component cha
-  const fetchQuiz = async () => {
-    let res = await getAllQuizForAdmin();
-    if (res && res.EC === 0) {
-      setListQuiz(res.DT); // Cập nhật danh sách quiz từ API
-    } else {
-      toast.error(res.EM); // Hiển thị lỗi nếu có
-    }
-  };
-
-  useEffect(() => {
-    fetchQuiz(); // Gọi fetchQuiz ngay khi component được mount
-  }, []);
   const handleChangeFile = (event) => {
     if (event.target && event.target.files && event.target.files[0]) {
       setImage(event.target.files[0]);
@@ -56,7 +39,6 @@ const ManageQuiz = () => {
       setName('');
       setDescription('');
       setImage(null);
-      fetchQuiz();
     } else {
       toast.error(res.EM);
     }
@@ -107,21 +89,30 @@ const ManageQuiz = () => {
                   />
                 </div>
                 <div className="mt-3">
-                  <button
-                    onClick={() => handleSubmitQuiz()}
-                    className="btn btn-warning"
-                  >
+                  <button onClick={() => handleSubmitQuiz()} className="btn btn-warning">
                     Save
                   </button>
                 </div>
               </fieldset>
             </div>
+            <div className="list-detail">
+              <TableQuiz />
+            </div>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>Update Q/A Quizzes</Accordion.Header>
+          <Accordion.Body>
+            <QuizQA />
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>Assign to Users</Accordion.Header>
+          <Accordion.Body>
+            <AssignQuiz />
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
-      <div className="list-detail">
-        <TableQuiz listQuiz={listQuiz} fetchQuiz={fetchQuiz} />{' '}
-      </div>
     </div>
   );
 };

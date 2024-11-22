@@ -1,7 +1,11 @@
 import _ from 'lodash';
+import { useState } from 'react';
+import Lightbox from 'react-awesome-lightbox';
+import { IoIosClose, IoIosCheckmark } from 'react-icons/io';
 
 const Question = (props) => {
-  const { data, index } = props;
+  const { data, index, isShowAnswer } = props;
+  const [isPreviewImage, setIsPreviewImage] = useState(false);
   if (_.isEmpty(data)) {
     return <></>;
   }
@@ -13,7 +17,18 @@ const Question = (props) => {
     <>
       {data.image ? (
         <div className="q-image">
-          <img src={`data:image/jpeg;base64,${data.image}`} />
+          <img
+            style={{ cursor: 'pointer' }}
+            onClick={() => setIsPreviewImage(true)}
+            src={`data:image/jpeg;base64,${data.image}`}
+          />
+          {isPreviewImage === true && (
+            <Lightbox
+              image={`data:image/jpeg;base64,${data.image}`}
+              title={'Question Image'}
+              onClose={() => setIsPreviewImage(false)}
+            ></Lightbox>
+          )}
         </div>
       ) : (
         <div className="q-image"></div>
@@ -24,21 +39,30 @@ const Question = (props) => {
       <div className="answer">
         {data.answers &&
           data.answers.length &&
-          data.answers.map((answer, index) => {
+          data.answers.map((a, i) => {
             return (
-              <div key={`answer-${index}`} className="a-child">
+              <div key={`answer-${i}`} className="a-child">
                 <div className="form-check">
                   <input
+                    id={`checkbox-${i}-${index}`}
                     className="form-check-input"
                     type="checkbox"
-                    checked={answer.isSelected}
-                    onChange={(event) =>
-                      handleHandleCheckBox(event, answer.id, data.questionId)
-                    }
+                    checked={a.isSelected}
+                    disabled={props.isSubmitQuiz}
+                    onChange={(event) => handleHandleCheckBox(event, a.id, data.questionId)}
                   />
-                  <label className="form-check-label">
-                    {answer.description}
+                  <label className="form-check-label" htmlFor={`checkbox-${i}-${index}`}>
+                    {a.description}
                   </label>
+                  {isShowAnswer === true && (
+                    <>
+                      {a.isSelected === true && a.isCorrect === false && (
+                        <IoIosClose className="incorrect" />
+                      )}
+
+                      {a.isCorrect === true && <IoIosCheckmark className="correct" />}
+                    </>
+                  )}
                 </div>
               </div>
             );
