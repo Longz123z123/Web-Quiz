@@ -6,9 +6,11 @@ import './DetailQuiz.scss';
 import Question from './Question';
 import ModalResult from './ModalResult';
 import RightContent from './Content/RightContent';
+import { useNavigate } from 'react-router-dom'; // Thêm useNavigate
 
 //
 const DetailQuiz = (props) => {
+  const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
   const quizId = params.id;
@@ -137,6 +139,10 @@ const DetailQuiz = (props) => {
     }
   };
 
+  const handleGoToQuizzes = () => {
+    navigate('/quizzes'); // Chuyển hướng tới trang Quizzes
+  };
+
   const handleCheckBox = (answerId, questionId) => {
     let dataQuizClone = _.cloneDeep(dataQuiz);
     let question = dataQuizClone.find((item) => +item.questionId === +questionId);
@@ -187,6 +193,9 @@ const DetailQuiz = (props) => {
             onClick={() => handleFinishQuiz()}
           >
             Finish
+          </button>
+          <button className="btn btn-danger" onClick={handleGoToQuizzes}>
+            Kết thúc
           </button>
         </div>
       </div>

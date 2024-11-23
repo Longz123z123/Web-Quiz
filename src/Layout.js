@@ -30,15 +30,15 @@ const Layout = (props) => {
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />}></Route>
           <Route
-            path="users"
+            path="quizzes"
             element={
               <PrivateRoute>
                 <ListQuiz />
               </PrivateRoute>
             }
           ></Route>
+          <Route path="/quiz/:id" element={<DetailQuiz />}></Route>
         </Route>
-        <Route path="/quiz/:id" element={<DetailQuiz />}></Route>
 
         <Route
           path="/admins"
@@ -53,6 +53,7 @@ const Layout = (props) => {
           <Route path="manage-quizzes" element={<ManageQuiz />}></Route>
           <Route path="manage-questions" element={<Questions />}></Route>
         </Route>
+
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/register" element={<Register></Register>}></Route>
         <Route path="*" element={<NotFound />} />

@@ -8,6 +8,7 @@ import { logout } from '../../services/apiServices';
 import { toast } from 'react-toastify';
 import { doLogout } from '../../redux/action/userAction';
 import Language from './Languge';
+import logoz from '../../assets/logoquiz.svg';
 
 const Header = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
@@ -34,12 +35,25 @@ const Header = () => {
       toast.error(rs.EM);
     }
   };
+  const openAdminTab = (e) => {
+    e.preventDefault(); // Ngăn không cho NavLink thực hiện chuyển hướng theo mặc định
+    window.open('/admins', '_blank'); // Mở tab mới
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
         {/* <Navbar.Brand href="">HỎI DÂN IT</Navbar.Brand> */}
         <NavLink to={`/`} className="navbar-brand">
-          ZeT1
+          <img
+            src={logoz}
+            alt="Logo"
+            style={{
+              height: '85px',
+              filter: 'invert(25%) sepia(100%) saturate(1000%) hue-rotate(215deg)',
+            }}
+            className="logoZ"
+          />{' '}
         </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -47,10 +61,10 @@ const Header = () => {
             <NavLink to={`/`} className="nav-link">
               Home
             </NavLink>
-            <NavLink to={`/users`} className="nav-link">
-              Users
+            <NavLink to={`/quizzes`} className="nav-link">
+              Quizzes
             </NavLink>
-            <NavLink to={`/admins`} className="nav-link">
+            <NavLink to={`/admins`} className="nav-link" onClick={openAdminTab}>
               Admin
             </NavLink>
           </Nav>

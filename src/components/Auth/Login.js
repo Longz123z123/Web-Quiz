@@ -6,13 +6,15 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { doLogin } from '../../redux/action/userAction';
 import { ImSpinner10 } from 'react-icons/im';
+import ReCAPTCHA from 'react-google-recaptcha'; // Import ReCAPTCHA
 import 'nprogress/nprogress.css';
-import Language from '../Header/Languge';
+
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [recaptchaValue, setRecaptchaValue] = useState(null); // State để lưu giá trị reCAPTCHA
   const navigate = useNavigate();
-  const dishpash = useDispatch();
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
   const validateEmail = (email) => {
@@ -22,8 +24,12 @@ const Login = (props) => {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
+
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaValue(value); // Lưu giá trị của reCAPTCHA
+  };
+
   const handleLogin = async () => {
-    // validate
     const isValidEmail = validateEmail(email);
     if (!isValidEmail) {
       toast.error('Invalid email');
@@ -34,11 +40,18 @@ const Login = (props) => {
       toast.error('Invalid password');
       return;
     }
+
+    if (!recaptchaValue) {
+      // Kiểm tra nếu reCAPTCHA chưa được xác nhận
+      toast.error('Please verify you are not a robot');
+      return;
+    }
+
     setIsLoading(true);
     //submit api
     let data = await postLogin(email, password);
     if (data && data.EC === 0) {
-      dishpash(doLogin(data));
+      dispatch(doLogin(data));
       toast.success(data.EM);
       setIsLoading(false);
       navigate('/');
@@ -47,19 +60,19 @@ const Login = (props) => {
       toast.error(data.EM);
       setIsLoading(false);
     }
-    //
   };
+
   const handleKeyDown = (event) => {
     if (event && event.key === 'Enter') {
       handleLogin();
     }
   };
+
   return (
     <div className="login-container">
       <div className="header">
         <span className="font-header-span"> Don't have an account yet? </span>
         <button onClick={() => navigate('/register')}>Sign up</button>
-        <Language />
       </div>
       <div className="title col-4 mx-auto">ZeT1</div>
       <div className="welcome col-4 mx-auto">Hello, who's this?</div>
@@ -84,6 +97,15 @@ const Login = (props) => {
           />
         </div>
         <span className="forgot-password">For got password?</span>
+
+        {/* Thêm Google reCAPTCHA */}
+        <div className="recaptcha-container">
+          <ReCAPTCHA
+            sitekey="6LfIsYcqAAAAAI9PPOlUDAIFOPIg89SejdK-eKoR" // Thay bằng key của bạn từ Google reCAPTCHA
+            onChange={handleRecaptchaChange} // Lắng nghe sự kiện thay đổi
+          />
+        </div>
+
         <div>
           <button className="btn-submit" onClick={() => handleLogin()} disabled={isLoading}>
             {isLoading === true && <ImSpinner10 className="loader-icon" />}

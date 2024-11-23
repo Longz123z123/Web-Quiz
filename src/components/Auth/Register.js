@@ -5,11 +5,13 @@ import { toast } from 'react-toastify';
 import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 import { postRegister } from '../../services/apiServices';
 import Language from '../Header/Languge';
+import ReCAPTCHA from 'react-google-recaptcha'; // Import ReCAPTCHA
+
 const Register = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-
+  const [recaptchaValue, setRecaptchaValue] = useState(null); // State lưu giá trị của reCAPTCHA
   const [isShowPassword, setIsShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -21,8 +23,9 @@ const Register = (props) => {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
+
   const handleRegister = async () => {
-    //validate
+    // Validate email and password
     const isValidEmail = validateEmail(email);
     if (!isValidEmail) {
       toast.error('Invalid email');
@@ -34,7 +37,12 @@ const Register = (props) => {
       return;
     }
 
-    //submit apis
+    if (!recaptchaValue) {
+      toast.error('Please verify you are not a robot');
+      return;
+    }
+
+    // Submit registration API
     let data = await postRegister(email, password, username);
     if (data && data.EC === 0) {
       toast.success(data.EM);
@@ -45,6 +53,11 @@ const Register = (props) => {
       toast.error(data.EM);
     }
   };
+
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaValue(value); // Lưu giá trị của reCAPTCHA
+  };
+
   return (
     <div className="register-container">
       <div className="header">
@@ -72,7 +85,6 @@ const Register = (props) => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
-
           {isShowPassword ? (
             <span className="icons-eye" onClick={() => setIsShowPassword(false)}>
               <VscEye />
@@ -92,6 +104,15 @@ const Register = (props) => {
             onChange={(event) => setUsername(event.target.value)}
           />
         </div>
+
+        {/* Thêm Google reCAPTCHA */}
+        <div className="recaptcha-container">
+          <ReCAPTCHA
+            sitekey="6LfIsYcqAAAAAI9PPOlUDAIFOPIg89SejdK-eKoR" // Thay bằng key của bạn từ Google reCAPTCHA
+            onChange={handleRecaptchaChange} // Lắng nghe sự kiện thay đổi
+          />
+        </div>
+
         <div>
           <button className="btn-submit" onClick={() => handleRegister()}>
             Create my free account
